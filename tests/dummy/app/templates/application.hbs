@@ -1,23 +1,20 @@
 <div class='content'>
-  <div class='form frost-flex-1'>
-    {{frost-text
-      hook=(concat hook '-text')
-      value=(readonly filters.text)
-      onInput=(action 'mutate' 'text')
-    }}
-    {{frost-toggle
-      hook=(concat hook '-toggle')
-      value=(readonly filters.toggle)
-      onClick=(action 'mutate' 'toggle')
-    }}
-    {{frost-select
-      hook=(concat hook '-select')
-      data=selectItems
-      selectedValue=(readonly filters.select)
-      onChange=(action 'mutateSelect')
-    }}
-    {{frost-select-outlet hook=(concat hook '-select-outlet')}}
-  </div>
+  {{#form-for filters
+      class='frost-flex-1'
+      update=(action 'mutate')
+      as |f|
+   }}
+    {{f.text-field 'firstName'}}
+    {{f.text-field 'lastName'}}
+
+    {{f.select-field 'gender' 'unknown male female'}}
+
+    {{f.email-field 'email'}}
+    {{f.text-field 'username'}}
+    {{f.password-field 'password'}}
+
+    {{f.checkbox-field 'terms'}}
+  {{/form-for}}
   <div class='frost-flex-1'>
     <table>
       <thead>

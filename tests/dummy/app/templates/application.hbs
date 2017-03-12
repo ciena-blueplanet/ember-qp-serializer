@@ -1,0 +1,47 @@
+<div class='content'>
+  <div class='form frost-flex-1'>
+    {{frost-text
+      hook=(concat hook '-text')
+      value=(readonly filters.text)
+      onInput=(action 'mutate' 'text')
+    }}
+    {{frost-toggle
+      hook=(concat hook '-toggle')
+      value=(readonly filters.toggle)
+      onClick=(action 'mutate' 'toggle')
+    }}
+    {{frost-select
+      hook=(concat hook '-select')
+      data=selectItems
+      selectedValue=(readonly filters.select)
+      onChange=(action 'mutateSelect')
+    }}
+    {{frost-select-outlet hook=(concat hook '-select-outlet')}}
+  </div>
+  <div class='frost-flex-1'>
+    <table>
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+      {{#each-in filters as |key value|}}
+        <tr>
+          <th>
+            <code>
+              {{key}}
+            </code>
+          </th>
+          <th>
+            <code>
+              {{value}}
+            </code>
+          </th>
+        </tr>
+      {{/each-in}}
+      </tbody>
+    </table>
+  </div>
+</div>

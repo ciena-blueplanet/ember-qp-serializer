@@ -1,0 +1,16 @@
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+table {
+  width: 100%;
+}
+table tbody {
+  text-align: left;
+}

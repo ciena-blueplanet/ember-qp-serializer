@@ -1,6 +1,8 @@
 import Ember from 'ember';
-import QPSerializerMixin from 'ember-qp-serializer'
 const {
   Route
 } = Ember
+// BEGIN-SNIPPET route
+import QPSerializerMixin from 'ember-qp-serializer'
 export default Route.extend(QPSerializerMixin)
+// END-SNIPPET

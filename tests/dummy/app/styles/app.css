@@ -1,7 +1,19 @@
-.content {
+.row {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+.align-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+pre {
+  margin: 0.2rem;
 }
 form {
   padding: 10px;
@@ -23,4 +35,9 @@ table {
 }
 table thead {
   line-height: 50px;
+}
+table tbody th {
+  font-family: monospace, monospace;
+  font-size: .9em;
+  font-weight: 100;
 }

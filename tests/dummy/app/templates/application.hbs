@@ -1,4 +1,5 @@
-<div class='content'>
+<div class='row'>
+  <!-- BEGIN-SNIPPET template -->
   {{#form-for filters
       class='frost-flex-1'
       update=(action 'mutate')
@@ -7,7 +8,12 @@
     {{f.text-field 'firstName'}}
     {{f.text-field 'lastName'}}
 
-    {{f.select-field 'gender' 'unknown male female'}}
+    {{f.select-field 'gender' (concat
+        'unknown '
+        'male '
+        'female'
+      )
+    }}
 
     {{f.email-field 'email'}}
     {{f.text-field 'username'}}
@@ -15,6 +21,8 @@
 
     {{f.checkbox-field 'terms'}}
   {{/form-for}}
+  <!-- END-SNIPPET -->
+
   <div class='frost-flex-1'>
     <table>
       <thead>
@@ -24,21 +32,25 @@
         </tr>
       </thead>
       <tbody>
+      <!-- BEGIN-SNIPPET each-in -->
       {{#each-in filters as |key value|}}
         <tr>
-          <th>
-            <code>
-              {{key}}
-            </code>
-          </th>
-          <th>
-            <code>
-              {{value}}
-            </code>
-          </th>
+          <th>{{key}}</th>
+          <th>{{value}}</th>
         </tr>
       {{/each-in}}
+      <!-- END-SNIPPET -->
       </tbody>
     </table>
+  </div>
+</div>
+<div class='align-center column'>
+  {{code-snippet name='route.js'}}
+  <div class='justify-center row'>
+    {{code-snippet name='template.hbs'}}
+    <div class='column'>
+      {{code-snippet name='controller.js'}}
+      {{code-snippet name='each-in.hbs'}}
+    </div>
   </div>
 </div>

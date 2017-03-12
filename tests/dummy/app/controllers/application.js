@@ -1,5 +1,6 @@
+// BEGIN-SNIPPET controller
 import Ember from 'ember';
-const {Controller, set, run: {debounce}} = Ember
+const {Controller, set, run} = Ember
 export default Controller.extend({
   queryParams: ['filters'],
   filters: {},
@@ -7,10 +8,11 @@ export default Controller.extend({
     this.notifyPropertyChange('filters')
   },
   actions: {
-    mutate (object, property, value) {
-      set(object, property, value)
+    mutate () {
+      set(...arguments)
 
-      debounce(this, this.notify, 500)
+      run.debounce(this, this.notify, 250)
     }
   }
 });
+// END-SNIPPET

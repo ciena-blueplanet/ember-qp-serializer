@@ -14,17 +14,12 @@
         'female'
       )
     }}
-
-    {{f.email-field 'email'}}
-    {{f.text-field 'username'}}
-    {{f.password-field 'password'}}
-
     {{f.checkbox-field 'terms'}}
   {{/form-for}}
   <!-- END-SNIPPET -->
 
   <div class='frost-flex-1'>
-    <table>
+    <table class='table table-sm'>
       <thead>
         <tr>
           <th>Key</th>
@@ -44,13 +39,13 @@
     </table>
   </div>
 </div>
-<div class='align-center column'>
-  {{code-snippet name='route.js'}}
-  <div class='justify-center row'>
+<div class='column'>
+  <div class='justify-left row'>
+    {{code-snippet name='each-in.hbs'}}
+    {{code-snippet name='route.js'}}
+  </div>
+  <div class='justify-left row'>
     {{code-snippet name='template.hbs'}}
-    <div class='column'>
-      {{code-snippet name='controller.js'}}
-      {{code-snippet name='each-in.hbs'}}
-    </div>
+    {{code-snippet name='controller.js'}}
   </div>
 </div>

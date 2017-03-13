@@ -8,8 +8,8 @@ export default Controller.extend({
     this.notifyPropertyChange('filters')
   },
   actions: {
-    mutate () {
-      set(...arguments)
+    mutate (object, property, value) {
+      set(object, property, value)
 
       run.debounce(this, this.notify, 250)
     }

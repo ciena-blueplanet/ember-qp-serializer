@@ -11,3 +11,4 @@ git push origin gh-pages -f;
 cd ..;
 
 echo 'Published!'
+-

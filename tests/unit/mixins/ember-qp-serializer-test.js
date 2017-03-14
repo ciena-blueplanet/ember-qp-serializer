@@ -1,12 +1,27 @@
-import Ember from 'ember';
-import EmberQpSerializerMixin from 'ember-qp-serializer/mixins/ember-qp-serializer';
-import { module, test } from 'qunit';
+/**
+ * Unit test for the ember-qp-serializer mixin
+ */
 
-module('Unit | Mixin | ember qp serializer');
+import {expect} from 'chai'
+import Ember from 'ember'
+import {afterEach, beforeEach, describe, it} from 'mocha'
+import sinon from 'sinon'
 
-// Replace this with your real tests.
-test('it works', function(assert) {
-  let EmberQpSerializerObject = Ember.Object.extend(EmberQpSerializerMixin);
-  let subject = EmberQpSerializerObject.create();
-  assert.ok(subject);
-});
+import EmberQpSerializerMixin from 'ember-qp-serializer/mixins/ember-qp-serializer'
+
+describe('Unit / Mixin / ember-qp-serializer /', function () {
+  let sandbox, subject
+
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create()
+    subject = Ember.Object.extend(EmberQpSerializerMixin).create()
+  })
+
+  afterEach(function () {
+    sandbox.restore()
+  })
+
+  it('should exist', function () {
+    expect(subject).not.to.equal(undefined)
+  })
+})

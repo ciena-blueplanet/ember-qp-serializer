@@ -1,6 +1,6 @@
 // BEGIN-SNIPPET controller
-import Ember from 'ember';
-const {Controller, set, run} = Ember
+import Ember from 'ember'
+const {Controller, run, set} = Ember
 export default Controller.extend({
   queryParams: ['filters'],
   filters: {},
@@ -14,5 +14,5 @@ export default Controller.extend({
       run.debounce(this, this.notify, 250)
     }
   }
-});
+})
 // END-SNIPPET

@@ -1,40 +1,65 @@
----
+sudo: required
+dist: trusty
 language: node_js
 node_js:
-  - "4"
-
-sudo: false
-
+  - '6.9.1'
+  - 'stable'
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - google-chrome
+    packages:
+    - google-chrome-stable
+    - g++-4.8
+  firefox: 'latest-esr'
 cache:
   directories:
-    - $HOME/.npm
-    - $HOME/.cache # includes bowers cache
-
+    - node_modules
 env:
-  # we recommend testing LTS's and latest stable release (bonus points to beta/canary)
-  - EMBER_TRY_SCENARIO=ember-1.13
-  - EMBER_TRY_SCENARIO=ember-lts-2.4
-  - EMBER_TRY_SCENARIO=ember-release
-  - EMBER_TRY_SCENARIO=ember-beta
-  - EMBER_TRY_SCENARIO=ember-canary
-
+  matrix:
+    - EMBER_TRY_SCENARIO=ember-2-8
+    - EMBER_TRY_SCENARIO=default
+    - EMBER_TRY_SCENARIO=ember-release
+  global:
+  - CXX=g++-4.8
+  - secure: ipghz8KviMNbE4OIQ8J0f5YENwNBcTh3TBi+MY8+NQ93J3vRsAGe8EhOrP+KcB65FhFqunXY6LpO1Vddq7fQUtvfseZQjc+kz3/u3ET0SSf0tw5qBOYDRXes7vY4wl+hTtQeQlYjFHVKhQ1UpQZsejFLEfS4nD3RWSUEeVANAdeJ5BNJqsggQYHqnbVPPX5cuhF+aa2W8cjG74ogPlqHwDkSSIptbOwLv97HXJxk9zSJBB1KMF13HHEjJuqdwKQ0sa4HX9641w3QISecgRUhN5PLul/hmctN7zN+RrPrLoc5GSi98QeYMXmY0yzC6MwAnuOdPOsP4I1ICBTfk/kj2X1+u8gQBdcq3j5aA09A4Vft8wjKkKvLd/sBfrKFlp3hloLD+8cH+J4cb+oZEVJAAVx8A1PLAE8KADmRaa0ygSbnTEOdP7kO5CRXcl4/ZklI/0SvwHBWFf2o4EWw2w9ZIdbjHfM0xEt86RHmbef4QrcePlWwgPNVVBxtYAkHs9huPHcFa4u0kJwxjLPWhU+TkALTlvblekgTjOdU4iT07fJ26zlSBpT9S7rcTtYyo1WC/Ni6LSYm1/1RcTj/j3oV0A1flyMbGeLphZUbJ2payz5N2uvQtOkysfBfncZEpt21xjtGNoylXf0ckFHBSHg4qO985+ZqiqyLrJAuqMnzB+4=
 matrix:
   fast_finish: true
   allow_failures:
-    - env: EMBER_TRY_SCENARIO=ember-canary
-
+    - env: EMBER_TRY_SCENARIO=ember-release
 before_install:
-  - npm config set spin false
-  - npm install -g bower
-  - bower --version
-  - npm install phantomjs-prebuilt
-  - node_modules/phantomjs-prebuilt/bin/phantomjs --version
+- npm config set spin false
+- npm install -g coveralls pr-bumper@^1.0.0
+- $(npm root -g)/pr-bumper/.travis/maybe-check-scope.sh
 
 install:
-  - npm install
-  - bower install
+- $(npm root -g)/pr-bumper/.travis/maybe-install.sh
+
+before_script:
+- "export DISPLAY=:99.0"
+- "sh -e /etc/init.d/xvfb start"
+- sleep 3 # give xvfb some time to start
 
 script:
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
-  - ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
+- $(npm root -g)/pr-bumper/.travis/maybe-test.sh
+- .travis/maybe-bump-version.sh
+
+after_success:
+- .travis/maybe-publish-coverage.sh
+- .travis/maybe-publish-gh-pages.sh
+deploy:
+  provider: npm
+  email: npm.ciena@gmail.com
+  skip_cleanup: true
+  api_key:
+    secure: vIFxekJWssy06ZIXj0kzLUjQe6Q1fjq2U2NeSwUntxp5gkbqqXyulKcuF8GJQaF0oTb2PM5nFw1gdFiizCQCXVO7jy+mqIRZzE374kTb1+JHlKowOntLCcnKylkXlW1yyxMGe5QQjjG/FCHl7D2K2rPvvpaV6VAoyCgi7WWkBglCy4K7iplqWFXElP1qIJc3gPJ2Q2NP/medP8VU8xBvjWICnXw5OYM8exvD+SH8yNnfTsy2RTKxVbD3a1CJeVzbMFKjVqGCayMvBz4cxpIkQjCDmkPu6xpbyPEWDg1wVnjKhZ5SvxA75cmvuL8Foo9/h0gXMo6FLrmkDGXSwjfZLO+xv79SB/Fk9u0ptrX9O9070GdQqbHlZ9c+k1dfY86FDfTGUIbfxteuf56XRfA6QOxuMgwMp8yh1LU4zqkvQUe8ImhUis3Dr9XG2gdVqbbfxF+142eF/x4dchA0mLJq3LxN9p3+cHC5Gv8ZIo87h2ipX4x5u7v38sbkZVG/Lg/pshwK4hZ5aL5JtTAhgS2+NWotg01mbBQXnSf4bi6zGz6MfLXSU8sGuUMQZIgwaTfbn/zWPDHqIbaFQDwXCreA8nz8t5T4HG6SNOKgTBHpxwv21j6toLqlFYe/nB1hydcI55xRIRheZBADpmrR7Ipzwg2lp5IitrhbFsioEL4C+CA=
+  on:
+    all_branches: true
+    condition: "$EMBER_TRY_SCENARIO = 'default'"
+    node: '6.9.1'
+    tags: true
+
+notifications:
+  slack:
+    secure: VD4huS0F3/D/4gyrrEzyfEkBaE73Kyg2jDNgpMu2GQwjoP1AAgMQ50kTwxOZVHekVHE+ZFeoHTj/k+E7uC0FrK8uNJqLI5XHB5OytoCWoq2gtXnpBRtmfSdrjYhTmZlMfsc9Wu++RaUDUb206fBLpHLn+hshgQgNwArJzRuBBoEKLfgMWyJCvoaTh9H1YAE9TdvbHhD0Z6NLMi+3yDvIMFlBi977qOupBzFoZk65LRHQ9viRwXIX2FPj13y7zQBGQ+E3xNQhHJRlARnbN5sgQjkLI+P8nwk5apnvklynzkPtYEX6KnhgN/3ULOx9B/vRbU7eMnslTV/0rZz9c2/pfZsDABkaqoH0b6RDKDdTa/jc2l+bBxiD3wIx39N5Z602DezHzo9PeTCfkpbhw0DIwSoCW73BeKljT7c+HGK0CGJ9Nl9qRt8FSyHE1FN7S7cd6OZXnEW+TdQ6+X3SKznJD9ufz1stHxqyz/P+oaFPx6RHi4UNeDw1++E6pl+pNf/4YdldPwpWzLTh3s7j8Gq/Zy03IlsUgmz41yTQQb+hy0vm37NewkzjmecV/Gxgp9NYpx6JzX09NckjxcH5sPKxC/EhqTDbezl0v5Hzjum0pv8AdCYLsZrIo33Olp23XCE24qNTpSh5d7VwTI1Lo2ZB1Pc0wwdkV4ND++iRWpw2zzc=

@@ -1,1 +1,1 @@
-export { default } from './mixins/ember-qp-serializer'
+export {default} from './mixins/ember-qp-serializer'

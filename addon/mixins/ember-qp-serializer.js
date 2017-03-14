@@ -1,5 +1,5 @@
 import Ember from 'ember'
-const {Mixin, Logger} = Ember
+const {Logger, Mixin} = Ember
 
 const TAG_NAME = '[ember-qp-serializer]'
 const VALID_TYPES = ['object', 'instance']
@@ -12,7 +12,7 @@ export default Mixin.create({
    * @param  {any} value The value to be serialized
    * @param  {string} urlKey qp key referencing `value`
    * @param  {string} defaultValueType [description]
-   * @return {string} serialized query parameter
+   * @returns {string} serialized query parameter
    */
   serializeQueryParam (value, urlKey, defaultValueType) {
     if (VALID_TYPES.includes(defaultValueType)) {
@@ -32,7 +32,7 @@ export default Mixin.create({
    * @param  {string} value The value to be deserialized
    * @param  {string} urlKey qp key referencing `value`
    * @param  {string} defaultValueType [description]
-   * @return {any} Deserialized query parameters
+   * @returns {any} Deserialized query parameters
    */
   deserializeQueryParam (value, urlKey, defaultValueType) {
     if (VALID_TYPES.includes(defaultValueType)) {

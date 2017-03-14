@@ -14,8 +14,10 @@
   "repository": "",
   "scripts": {
     "build": "ember build",
+    "lint": "lint-all-the-things",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "npm run lint && npm run test-addon",
+    "test-addon": "EMBER_TRY_SCENARIO=${EMBER_TRY_SCENARIO:=default} && ember try:one $EMBER_TRY_SCENARIO --- COVERAGE=true ember test"
   },
   "dependencies": {
     "ember-cli-babel": "^5.1.7"
@@ -31,7 +33,6 @@
     "ember-cli-htmlbars": "^1.0.10",
     "ember-cli-htmlbars-inline-precompile": "^0.3.3",
     "ember-cli-inject-live-reload": "^1.4.1",
-    "ember-cli-jshint": "^2.0.1",
     "ember-cli-mocha": "0.13.2",
     "ember-cli-release": "^0.2.9",
     "ember-cli-sri": "^2.1.0",
@@ -45,7 +46,6 @@
     "ember-elsewhere": "0.4.1",
     "ember-export-application-global": "^1.0.5",
     "ember-form-for": "2.0.0-alpha.15",
-    "ember-frost-core": "1.10.0",
     "ember-frost-test": "1.0.2",
     "ember-hook": "1.4.1",
     "ember-load-initializers": "^0.5.1",
@@ -60,7 +60,7 @@
     "sinon-chai": "^2.8.0"
   },
   "engines": {
-    "node": ">= 0.12.0"
+    "node": ">= 6.0.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
